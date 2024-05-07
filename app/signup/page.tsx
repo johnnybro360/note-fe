@@ -1,14 +1,15 @@
 'use client'
 
 import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
-import {ChangeEvent, MouseEvent, useState} from "react";
+import { Input } from "@/components/ui/input"
+import {ChangeEvent, useState} from "react";
 import Link from "next/link";
-import axios from "axios";
-import {useRouter} from "next/navigation";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import Axios from "axios";
+
 
 export default function Home() {
-    const route = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -20,19 +21,10 @@ export default function Home() {
         setPassword(event.target.value);
     }
 
-    const handleLogin = async (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>)  => {
-        event.preventDefault();
-        try {
-            const response = await axios.post("http://localhost:3000/auth/signin", {email, password});
-
-            if (response.status === 201) {
-                route.push('/posts')
-            }
-        } catch (error) {
-            console.error(error); // Log the error for debugging
-        }
-
+    const handleSignUp = async () => {
+        console.log(email, password);
     }
+
 
     return (
         <>
@@ -46,9 +38,11 @@ export default function Home() {
                 </div>
                 <div className={"flex justify-between"}>
                     <div>
-                        <Button onClick={(event) =>handleLogin(event)}>Log In</Button>
+                        <Button onClick={handleSignUp}>Log In</Button>
                     </div>
-                    <Link href={"/signup"}>Sign Up</Link>
+                    <Link href={"/"}>
+                        <FontAwesomeIcon className={'ml-3 h-8'} icon={faArrowLeft} />
+                    </Link>
                 </div>
             </div>
         </>
