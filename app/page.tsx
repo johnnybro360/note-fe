@@ -26,12 +26,12 @@ export default function Home() {
             const response = await axios.post("http://localhost:3000/auth/signin", {email, password});
 
             if (response.status === 201) {
+                console.log(document.cookie.split(';'))
                 route.push('/posts')
             }
         } catch (error) {
             console.error(error); // Log the error for debugging
         }
-
     }
 
     return (
