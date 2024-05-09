@@ -16,6 +16,7 @@ const Posts = () => {
             const response = await axios.get("http://localhost:3000/auth/logout");
 
             if (response.status === 200) {
+                localStorage.removeItem('token');
                 route.push('/')
             }
         } catch (error) {
@@ -32,12 +33,14 @@ const Posts = () => {
             if (response.status === 201) {
                 // Verification successful
                 setIsLoggedIn(true);
+                console.log('isLoggedIn:', isLoggedIn);
                 console.log('JWT verified:', response.data)
             } else {
                 console.error('JWT verification failed:', response.data);
                 // Handle invalid or expired JWT (e.g., clear token from storage)
                 localStorage.removeItem('token');
                 console.log('JWT removed from local storage')
+                route.push('/');
             }
         } catch (error) {
             console.error('Error verifying JWT:', error);
@@ -48,7 +51,11 @@ const Posts = () => {
     useEffect(() => {
         // Check for existing JWT in local storage (if using)
         const token = localStorage.getItem('token');
-        if (token) {
+        if (!token) {
+            console.log('isLoggedIn:', isLoggedIn);
+            console.log('No token found')
+            route.push('/');
+        } else {
             // Verify JWT on backend (not shown here)
             // If verification successful, set isLoggedIn to true
             verifyToken(token);//
@@ -57,9 +64,12 @@ const Posts = () => {
 
     return (
         <div>
-            <Button onClick={(event) =>
-                handleLogOut(event)}>Log Out</Button>
-            <h1>Hello World</h1>
+        {isLoggedIn ? (
+            <div>
+                 <Button onClick={handleLogOut}>Log Out</Button>
+                 <h1>Hello World</h1>
+             </div>
+             ) : "You are not logged in"}
         </div>
     );
 };

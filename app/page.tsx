@@ -25,10 +25,8 @@ export default function Home() {
         event.preventDefault();
         try {
             const response = await axios.post("http://localhost:3000/auth/signin", {email, password});
-
             if (response.status === 201) {
                 setIsLoggedIn(true);
-                // console.log(response.data.token)
                 localStorage.setItem('token', response.data.token);
                 route.push('/posts')
             }
